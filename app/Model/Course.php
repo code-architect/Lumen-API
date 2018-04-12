@@ -7,8 +7,9 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class Course extends Eloquent
 {
     protected $collection = "teacher";
+    protected $primaryKey = "_id";
 
-    protected $fillable = ['id', 'title', 'description', 'value'];
+    protected $fillable = ['_id', 'title', 'description', 'value', 'teacher_id'];
     protected  $hidden = ['created_at', 'updated_at'];
 
     public function students()
