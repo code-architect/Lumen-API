@@ -1,0 +1,5 @@
+https://github.com/jenssegers/laravel-mongodb/issues/864
+https://github.com/jenssegers/laravel-mongodb/blob/master/tests/seeds/UserTableSeeder.php
+https://github.com/jenssegers/laravel-mongodb/issues/1097
+
+

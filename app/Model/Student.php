@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Teacher extends Eloquent
+class Student extends Eloquent
 {
     protected $collection = "teacher";
     protected $primaryKey = "_id";

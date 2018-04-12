@@ -22,9 +22,9 @@ class CreateCourseStudentTable extends Migration
 
                 $collection->index('_id');
                 $collection->integer('course_id')->unsigned();
-                $collection->foreign('course_id')->references('_id')->on('teachers')->onDelete('cascade');
-                $collection->integer('teacher_id')->unsigned();
-                $collection->foreign('teacher_id')->references('_id')->on('teachers')->onDelete('cascade');
+                $collection->foreign('course_id')->references('_id')->on('courses')->onDelete('cascade');
+                $collection->integer('student_id')->unsigned();
+                $collection->foreign('student_id')->references('_id')->on('students')->onDelete('cascade');
             });
     }
 
