@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Teacher;
+
 class TeacherController extends Controller
 {
 
     public function index()
     {
-        return __METHOD__;
+        $teachers = Teacher::all();
+
+        return $this->createSuccessResponse($teachers);
     }
 
     public function store()
@@ -15,9 +19,13 @@ class TeacherController extends Controller
         return __METHOD__;
     }
 
-    public function show()
+    public function show($id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($id);
+        if($teacher){
+            return $this->createSuccessResponse($teacher);
+        }
+        return $this->createErrorResponse("Teacher with id : {$id} does not exists", 404);
     }
 
     public function update()

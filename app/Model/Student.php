@@ -6,7 +6,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class Student extends Eloquent
 {
-    protected $collection = "teacher";
+    protected $collection = "students";
     protected $primaryKey = "_id";
 
     protected $fillable = ['_id', 'name', 'address', 'phone', 'career'];
