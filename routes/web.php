@@ -12,7 +12,9 @@
 */
 
 $router->get('/', function () use ($router) {
-        $user = \App\Test::all();
+        //$user = \App\Test::all();
+        $user = \App\Test::where('_id','=','5ace22bdda939d0d31c989b0')->first();
+
         echo "<pre>";
         dd($user);
 });

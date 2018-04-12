@@ -1,21 +1,73 @@
-# Lumen PHP Framework
+# Lumen API Development
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+In this project I ma using MongoDB. And using this git package 
+https://github.com/jenssegers/laravel-mongodb/blob/master/README.md
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Read their documentation 
 
-## Official Documentation
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+__Installation using composer :__  
+`composer require jenssegers/mongodb`
+### Laravel version Compatibility
 
-## Security Vulnerabilities
+ Laravel  | Package
+:---------|:----------
+ 4.2.x    | 2.0.x
+ 5.0.x    | 2.1.x
+ 5.1.x    | 2.2.x or 3.0.x
+ 5.2.x    | 2.3.x or 3.0.x
+ 5.3.x    | 3.1.x or 3.2.x
+ 5.4.x    | 3.2.x
+ 5.5.x    | 3.3.x
+ 5.6.x    | 3.4.x
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+add the service provider in `bootstrap/app.php`.    
+
+```php
+$app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
+
+$app->withEloquent();
+``` 
+
+###Changes in Model
+
+Please change all `Jenssegers\Mongodb\Model` references to `Jenssegers\Mongodb\Eloquent\Model` either at the top of your model files, or your registered alias.
+
+```php
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+
+class User extends Eloquent {}
+```  
+
+Embedded relations now return an `Illuminate\Database\Eloquent\Collection` rather than a custom Collection class. If you were using one of the special methods that were available, convert them to Collection operations.
+
+```php
+$books = $user->books()->sortBy('title');
+```
+
+Configuration
+-------------
+
+Change your default database connection name in `/vendor/laravel/lumen-framework/config/database.php`:
+
+```php
+'default' => env('DB_CONNECTION', 'mongodb'),
+```
+
+And add a new mongodb connection:
+
+```php
+'mongodb' => [
+    'driver'   => 'mongodb',
+    'host'     => env('DB_HOST', 'localhost'),
+    'port'     => env('DB_PORT', 27017),
+    'database' => env('DB_DATABASE'),
+    'username' => env('DB_USERNAME'),
+    'password' => env('DB_PASSWORD'),
+    'options'  => [
+        'database' => 'admin' // sets the authentication database required by mongo 3
+    ]
+],
+```
