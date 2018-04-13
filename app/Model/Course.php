@@ -14,7 +14,7 @@ class Course extends Eloquent
 
     public function students()
     {
-        return $this->belongsToMany('App\Model\Student');
+        return $this->belongsToMany('App\Model\Student', null, 'course_id', 'student_id');
     }
 
     public function teacher()

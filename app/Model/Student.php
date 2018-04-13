@@ -6,6 +6,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class Student extends Eloquent
 {
+
     protected $collection = "students";
     protected $primaryKey = "_id";
 
@@ -14,7 +15,7 @@ class Student extends Eloquent
 
     public function courses()
     {
-        return $this->belongsToMany('App\Model\Course');
+        return $this->belongsToMany('App\Model\Course', null, 'student_id', 'course_id');
     }
 
 

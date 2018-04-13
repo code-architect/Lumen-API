@@ -15,6 +15,10 @@ class StudentController extends Controller
         return $this->createSuccessResponse($student);
     }
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
     /**
      * Create a new Student
      * @param Request $request
@@ -29,6 +33,10 @@ class StudentController extends Controller
         return $this->createSuccessResponse("A student with id of {$student->_id} has been added to database", 201);
     }
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
     public function show($id)
     {
         $student = Student::find($id);
@@ -38,6 +46,10 @@ class StudentController extends Controller
         }
         return $this->createErrorResponse("Student with id : {$id} does not exists", 404);
     }
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 
     /**
      * Update students based on student id
@@ -65,10 +77,28 @@ class StudentController extends Controller
         return $this->createErrorResponse("The student specified does not exists", 404);
     }
 
-    public function destroy()
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
+    public function destroy($student_id)
     {
-        return __METHOD__;
+        $student = Student::find($student_id);
+
+        if($student)
+        {
+            $student->courses()->delete();
+            $student->delete();
+
+            return $this->createSuccessResponse("Student data has been deleted successfully", 201);
+        }
+
+        return $this->createErrorResponse("The student specified does not exists", 404);
     }
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 
     public function validateRequestRules($request)
     {

@@ -15,6 +15,10 @@ class TeacherController extends Controller
         return $this->createSuccessResponse($teachers);
     }
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
     /**
      * Create a new Teacher
      * @param Request $request
@@ -36,6 +40,10 @@ class TeacherController extends Controller
         return $this->createSuccessResponse("A teacher with id of {$teacher->_id} has been added to database", 201);
     }
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
     public function show($id)
     {
         $teacher = Teacher::find($id);
@@ -45,11 +53,15 @@ class TeacherController extends Controller
         return $this->createErrorResponse("Teacher with id : {$id} does not exists", 404);
     }
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
     public function update(Request $request, $teacher_id)
     {
         $teacher = Teacher::find($teacher_id);
 
-        
+
         if($teacher)
         {
             $this->validateRequestRules($request);
@@ -66,10 +78,34 @@ class TeacherController extends Controller
         return $this->createErrorResponse("The student specified does not exists", 404);
     }
 
-    public function destroy()
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
+    /**
+     * @param $teacher_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($teacher_id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($teacher_id);
+
+        if($teacher)
+        {
+            $courses = $teacher->courses();
+            var_dump($courses);
+            if(sizeof($courses) > 0){
+                return $this->createErrorResponse("You can not remove a teacher with active courses", 404);
+            }
+            $teacher->delete();
+            return $this->createSuccessResponse("Teacher data has been deleted successfully", 200);
+        }
+        return $this->createErrorResponse("The teacher specified does not exists", 404);
     }
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 
     public function validateRequestRules($request)
     {

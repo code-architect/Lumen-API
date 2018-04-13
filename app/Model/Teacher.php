@@ -14,7 +14,7 @@ class Teacher extends Eloquent
 
     public function courses()
     {
-        return $this->hasMany('App\Model\Course');
+        return $this->hasMany('App\Model\Course', 'teacher_id');
     }
 
 
