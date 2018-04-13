@@ -15,16 +15,14 @@ class StudentController extends Controller
         return $this->createSuccessResponse($student);
     }
 
+    /**
+     * Create a new Student
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
-        $rules = [
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required|numeric',
-            'career' => 'required',
-        ];
-
-        $this->validate($request, $rules);
+        $this->validateRequestRules($request);
 
         $student = Student::create($request->all());
 
@@ -41,13 +39,45 @@ class StudentController extends Controller
         return $this->createErrorResponse("Student with id : {$id} does not exists", 404);
     }
 
-    public function update()
+    /**
+     * Update students based on student id
+     * @param Request $request
+     * @param $student_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $student_id)
     {
-        return __METHOD__;
+        $student = Student::find($student_id);
+
+        if($student)
+        {
+            $this->validateRequestRules($request);
+
+            $student->name = $request->get('name');
+            $student->phone = $request->get('phone');
+            $student->address = $request->get('address');
+            $student->career = $request->get('career');
+
+            $student->save();
+
+            return $this->createSuccessResponse("Student data has been updated successfully", 201);
+        }
+        return $this->createErrorResponse("The student specified does not exists", 404);
     }
 
     public function destroy()
     {
         return __METHOD__;
+    }
+
+    public function validateRequestRules($request)
+    {
+        $rules = [
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required|numeric',
+            'career' => 'required',
+        ];
+        $this->validate($request, $rules);
     }
 }

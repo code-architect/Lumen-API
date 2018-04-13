@@ -15,6 +15,11 @@ class TeacherController extends Controller
         return $this->createSuccessResponse($teachers);
     }
 
+    /**
+     * Create a new Teacher
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         $rules = [
@@ -40,13 +45,40 @@ class TeacherController extends Controller
         return $this->createErrorResponse("Teacher with id : {$id} does not exists", 404);
     }
 
-    public function update()
+    public function update(Request $request, $teacher_id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($teacher_id);
+
+        
+        if($teacher)
+        {
+            $this->validateRequestRules($request);
+
+            $teacher->name = $request->get('name');
+            $teacher->phone = $request->get('phone');
+            $teacher->address = $request->get('address');
+            $teacher->profession = $request->get('profession');
+
+            $teacher->save();
+
+            return $this->createSuccessResponse("Teacher data has been updated successfully", 201);
+        }
+        return $this->createErrorResponse("The student specified does not exists", 404);
     }
 
     public function destroy()
     {
         return __METHOD__;
+    }
+
+    public function validateRequestRules($request)
+    {
+        $rules = [
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required|numeric',
+            'profession' => 'required',
+        ];
+        $this->validate($request, $rules);
     }
 }
