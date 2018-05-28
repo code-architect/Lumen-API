@@ -10,16 +10,14 @@
 | database. Just tell the factory how a default model should look.
 |
 */
-/*
-$factory->define(App\Model\Teacher::class, function (Faker\Generator $faker) {
+
+$factory->define(App\Model\User::class, function (Faker\Generator $faker) {
     return [
-        'name'      => $faker->name,
-        'address'    => $faker->address,
-        'phone'     => $faker->phoneNumber,
-        'profession'=> $faker->randomElement($array = array('engineering', 'math', 'physics'))
+        'name' => $faker->name,
+        'email' => $faker->email,
     ];
 });
-
+/*
 $factory->define(App\Model\Student::class, function (Faker\Generator $faker) {
     return [
         'name'      => $faker->name,

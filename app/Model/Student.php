@@ -2,22 +2,16 @@
 
 namespace App\Model;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
-class Student extends Eloquent
-{
+class Student extends Model{
 
-    protected $collection = "students";
-    protected $primaryKey = "_id";
+    protected $fillable = ['name', 'address', 'phone', 'career'];
 
-    protected $fillable = ['_id', 'name', 'address', 'phone', 'career'];
-    protected  $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function courses()
     {
-        return $this->belongsToMany('App\Model\Course', null, 'student_id', 'course_id');
+        return $this->belongsToMany('App\Model\Course');
     }
-
-
-
 }
