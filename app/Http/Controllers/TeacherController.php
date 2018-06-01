@@ -26,21 +26,28 @@ class TeacherController extends Controller{
 
     public function store(Request $request)
     {
-        $rules =[
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required'
-        ];
-        $this->validate($request, $rules);
+        $this->validateRequest($request);
         $teacher = Teacher::create($request->all());
 
-        return $this->createSuccessResponse("The student with id: {$teacher->id} has been created", 201);
+        return $this->createSuccessResponse("The teacher with id: {$teacher->id} has been created", 201);
     }
 
 
-    public function update()
+    public function update(Request $request, $teacher_id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($teacher_id);
+
+        if($teacher){
+            $this->validateRequest($request);
+            $teacher->name = $request->get('name');
+            $teacher->phone = $request->get('phone');
+            $teacher->address = $request->get('address');
+
+            $teacher->save();
+
+            return $this->createSuccessResponse("The teacher with id {$teacher->id} has been updated", 201);
+        }
+        return $this->createErrorResponse("The student does not exists", 404);
     }
 
     public function destroy()
@@ -48,5 +55,15 @@ class TeacherController extends Controller{
         return __METHOD__;
     }
 
+//---------------------------------------------------------------------------------------------------//
 
+    public function validateRequest($request)
+    {
+        $rules =[
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required'
+        ];
+        $this->validate($request, $rules);
+    }
 }
