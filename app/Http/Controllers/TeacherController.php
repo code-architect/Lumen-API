@@ -50,9 +50,19 @@ class TeacherController extends Controller{
         return $this->createErrorResponse("The student does not exists", 404);
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($id);
+        if($teacher)
+        {
+            $courses = $teacher->courses;
+            if(sizeof($courses) > 0){
+                return $this->createErrorResponse("You can\'t remove a teacher with courses. Remove the course first", 409); // 409 means a conflict with the request
+            }
+            $teacher->delete();
+            return $this->createSuccessResponse("The teacher with id: {$teacher->id} has been removed", 200);
+        }
+        return $this->createErrorResponse("The teacher does not exists", 404);
     }
 
 //---------------------------------------------------------------------------------------------------//
