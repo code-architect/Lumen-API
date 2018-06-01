@@ -31,7 +31,7 @@ $router->patch('/students/{students}', 'StudentController@update');
 $router->delete('/students/{students}', 'StudentController@destroy');
 
 $router->get('/courses', 'CourseController@index');
-$router->get('/courses/{courses}', 'CourseController@index');
+$router->get('/courses/{courses}', 'CourseController@show');
 
 $router->get('/teachers/{teachers}/courses', 'TeacherCourseController@index');
 $router->post('/teachers/{teachers}/courses', 'TeacherCourseController@store');

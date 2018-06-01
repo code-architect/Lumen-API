@@ -2,26 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Student;
+use Illuminate\Http\Request;
+
 class StudentController extends Controller{
 
     public function index()
     {
-        return __METHOD__;
+        $students = Student::all();
+        return $this->createSuccessResponse($students);
     }
 
-    public function store()
+    public function show($id)
     {
-        return __METHOD__;
+        $student = Student::find($id);
+        if($student){
+            return $this->createSuccessResponse($student);
+        }
+        return $this->createErrorResponse("The course with id {$id}, does not exists", 404);
     }
 
-    public function show()
+    public function store(Request $request)
     {
-        return __METHOD__;
+        $rules =[
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'career' => 'required|in:engineering,math,physics'
+        ];
+        $this->validate($request, $rules);
+        $student = Student::create($request->all());
+
+        return $this->createSuccessResponse("The student with id: {$student->id} has been created", 201);
     }
 
     public function update()
     {
-        return __METHOD__;
+
     }
 
     public function destroy()

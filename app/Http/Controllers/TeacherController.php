@@ -2,22 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Teacher;
+use Illuminate\Http\Request;
+
 class TeacherController extends Controller{
 
     public function index()
     {
-        return __METHOD__;
+        $teachers = Teacher::all();
+        return $this->createSuccessResponse($teachers);
     }
 
-    public function store()
+
+
+    public function show($id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($id);
+        if($teacher){
+            return $this->createSuccessResponse($teacher);
+        }
+        return $this->createErrorResponse("The course with id {$id}, does not exists", 404);
     }
 
-    public function show()
+    public function store(Request $request)
     {
-        return __METHOD__;
+        $rules =[
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required'
+        ];
+        $this->validate($request, $rules);
+        $teacher = Teacher::create($request->all());
+
+        return $this->createSuccessResponse("The student with id: {$teacher->id} has been created", 201);
     }
+
 
     public function update()
     {
