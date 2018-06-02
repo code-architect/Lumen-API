@@ -39,9 +39,33 @@ class TeacherCourseController extends Controller{
     }
 
 
-    public function update()
+    /**
+     * Updating the teachers in the course and courses with the teachers with PUT and PATCH request
+     * @param Request $request
+     * @param $teacher_id
+     * @param $course_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $teacher_id, $course_id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($teacher_id);
+        if($teacher)
+        {
+            $course = Course::find($course_id);
+            if($course)
+            {
+                $this->validateRequest($request);
+                $course->title = $request->get('title');
+                $course->description = $request->get('description');
+                $course->value = $request->get('value');
+                $course->teacher_id = $teacher_id;
+
+                $course->save();
+                return $this->createSuccessResponse("The course with id {$course->id} has been updated", 200);
+            }
+            return $this->createErrorResponse("Course does not exists with the given id", 404);
+        }
+        return $this->createErrorResponse("Teacher does not exists with the given id", 404);
     }
 
     public function destroy()
