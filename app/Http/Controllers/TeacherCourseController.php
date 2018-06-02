@@ -68,9 +68,34 @@ class TeacherCourseController extends Controller{
         return $this->createErrorResponse("Teacher does not exists with the given id", 404);
     }
 
-    public function destroy()
+
+    /**
+     * Deleting the course, first remove the students attending the course then delete it
+     * @param $teacher_id
+     * @param $course_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($teacher_id, $course_id)
     {
-        return __METHOD__;
+        $teacher = Teacher::find($teacher_id);
+        if($teacher)
+        {
+            $course = Course::find($course_id);
+            if($course)
+            {
+                if($teacher->courses()->find($course_id))
+                {
+                    // removing all the students
+                    $course->students()->detach();
+                    // remove the course
+                    $course->delete();
+                    return $this->createSuccessResponse("The course with the id {$course->id} has been removed", 200);
+                }
+                return $this->createErrorResponse("This course is not associated with this teacher", 409);  // I think this is a conflict
+            }
+            return $this->createErrorResponse("Course does not exists with the given id", 404);
+        }
+        return $this->createErrorResponse("Teacher does not exists with the given id", 404);
     }
 //---------------------------------------------------------------------------------------------------//
 

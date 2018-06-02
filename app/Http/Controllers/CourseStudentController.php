@@ -39,9 +39,24 @@ class CourseStudentController extends Controller{
         return $this->createErrorResponse("Does not exists a course with the given id", 404);
     }
 
-    public function destroy()
+    public function destroy($course_id, $student_id)
     {
-        return __METHOD__;
+        $course = Course::find($course_id);
+        if($course)
+        {
+            $student = Student::find($student_id);
+            if($student)
+            {
+                if(!$course->students()->find($student->id))
+                {
+                    return $this->createErrorResponse("The student with ID: {$student->id} does not exist in this course", 404);
+                }
+                $course->students()->detach($student->id);
+                return $this->createSuccessResponse("The student with ID: {$student->id} has been removed from this course", 200);
+            }
+            return $this->createErrorResponse("Does not exists a student with the given id", 404);
+        }
+        return $this->createErrorResponse("Does not exists a course with the given id", 404);
     }
 
 

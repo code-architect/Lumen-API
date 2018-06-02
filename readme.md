@@ -1,6 +1,7 @@
 # Lumen API Development
 
-In this project I ma using MongoDB. And using this git package 
+In this project I ma using MongoDB and MySQL. The basic MongoDB has been covered till 
+"commit aa73c0e8dbb6d75dbbc46e5b80d734e1184e4c6b". After that I have used MySQL. To use MongoDB I have been using this git package 
 https://github.com/jenssegers/laravel-mongodb/blob/master/README.md
 
 Read their documentation 
